@@ -43,12 +43,22 @@ public class Boid : MonoBehaviour
         _velocity = dir * speed;
 
         transform.position += _velocity * Time.deltaTime;
+
         var lookDir = Vector3.SmoothDamp(_previousLookDir, dir, ref _lookDirRef, 0.2f);
         transform.LookAt(transform.position + lookDir);
         _previousLookDir = lookDir;
 
         _velocity = _acceleration = Vector3.zero;
 
+        LimitPosition();
+
         Position = transform.position;
+    }
+
+    private void LimitPosition()
+    {
+        var pos = transform.position;
+        pos.x = Mathf.Clamp(pos.x, -_data.limitX, _data.limitX);
+        transform.position = pos;
     }
 }

@@ -24,3 +24,4 @@ MonoBehaviour:
   seperationWeight: 2.5
   inputWeight: 4
   avoidanceWeight: 1000000
+  limitX: 5

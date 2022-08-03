@@ -5,6 +5,7 @@ public class BoidData : ScriptableObject
 {
     public float horizontalMovementSpeed = 10f;
     public float forwardMovementSpeed = 7f;
+
     public float minSpeed = 5f;
     public float maxSpeed = 8f;
     public float perceptionRadius = 10f;
@@ -16,4 +17,6 @@ public class BoidData : ScriptableObject
     public float seperationWeight = 2.5f;
     public float inputWeight = 5f;
     public float avoidanceWeight = 20f;
+
+    public float limitX = 5f;
 }
