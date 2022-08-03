@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Boid))]
 public class BoidCohesion : MonoBehaviour
 {
     Boid _boid;

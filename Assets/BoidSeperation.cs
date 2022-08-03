@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Boid))]
 public class BoidSeperation : MonoBehaviour
 {
     Boid _boid;
@@ -18,7 +19,7 @@ public class BoidSeperation : MonoBehaviour
         for (int i = 0; i < boids.Count; i++)
         {
             var dist = (transform.position - boids[i].Position).magnitude;
-            if (boids[i] != _boid && dist < _boid.Data.avoidanceRadius)
+            if (boids[i] != _boid && dist < _boid.Data.seperationRadius)
             {
                 var thisPos = new Vector3(transform.position.x, 0f, transform.position.z);
                 var otherPos = new Vector3(boids[i].Position.x, 0f, boids[i].Position.z);

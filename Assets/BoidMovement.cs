@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Boid))]
 public class BoidMovement : MonoBehaviour
 {
     private Boid _boid;
