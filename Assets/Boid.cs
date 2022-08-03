@@ -2,15 +2,15 @@ using UnityEngine;
 
 public class Boid : MonoBehaviour
 {
-    [SerializeField] float posLimitX = 20;
-    [SerializeField] float posLimitY = 20;
-    [SerializeField] float posLimitZ = 20;
     [SerializeField] BoidData _data;
 
     private BoidManager _boidManager;
 
     private Vector3 _velocity;
     private Vector3 _acceleration;
+
+    private Vector3 _previousLookDir;
+    private Vector3 _lookDirRef;
 
     public BoidData Data => _data;
     public BoidManager Manager => _boidManager;
@@ -21,7 +21,6 @@ public class Boid : MonoBehaviour
     public void Initialize(BoidManager boidManager)
     {
         _boidManager = boidManager;
-        _velocity = Random.insideUnitSphere;
     }
 
     public void Steer(Vector3 direction, float weight)
@@ -44,40 +43,12 @@ public class Boid : MonoBehaviour
         _velocity = dir * speed;
 
         transform.position += _velocity * Time.deltaTime;
-        transform.forward = dir;
+        var lookDir = Vector3.SmoothDamp(_previousLookDir, dir, ref _lookDirRef, 0.2f);
+        transform.LookAt(transform.position + lookDir);
+        _previousLookDir = lookDir;
 
-        _acceleration = Vector3.zero;
-
-        LimitPosition();
+        _velocity = _acceleration = Vector3.zero;
 
         Position = transform.position;
-    }
-
-    private void LimitPosition()
-    {
-        if (transform.position.x > posLimitX)
-        {
-            transform.position = new Vector3(-posLimitX, transform.position.y, transform.position.z);
-        }
-        if (transform.position.x < -posLimitX)
-        {
-            transform.position = new Vector3(posLimitX, transform.position.y, transform.position.z);
-        }
-        if (transform.position.y > posLimitY)
-        {
-            transform.position = new Vector3(transform.position.x, -posLimitY, transform.position.z);
-        }
-        if (transform.position.y < -posLimitY)
-        {
-            transform.position = new Vector3(transform.position.x, posLimitY, transform.position.z);
-        }
-        if (transform.position.z > posLimitZ)
-        {
-            transform.position = new Vector3(transform.position.x, transform.position.y, -posLimitZ);
-        }
-        if (transform.position.z < -posLimitZ)
-        {
-            transform.position = new Vector3(transform.position.x, transform.position.y, posLimitZ);
-        }
     }
 }

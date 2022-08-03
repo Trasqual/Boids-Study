@@ -20,7 +20,7 @@ public class BoidCohesion : MonoBehaviour
             var dist = (transform.position - boids[i].Position).magnitude;
             if (boids[i] != _boid && dist < _boid.Data.perceptionRadius)
             {
-                average += boids[i].Position;
+                average += new Vector3(boids[i].Position.x, 0f, boids[i].Position.z);
                 count++;
             }
         }
@@ -28,7 +28,7 @@ public class BoidCohesion : MonoBehaviour
         if (count > 0)
         {
             average /= count;
-            average -= transform.position;
+            average -= new Vector3(transform.position.x, 0f, transform.position.z);
         }
 
         _boid.Steer(average, _boid.Data.cohesionWeight);

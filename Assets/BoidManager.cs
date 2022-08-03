@@ -25,9 +25,10 @@ public class BoidManager : MonoBehaviour
     {
         for (int i = 0; i < boidAmount; i++)
         {
-            var pos = transform.position + (Random.insideUnitSphere * Random.Range(3, 10));
+            var pos = Random.insideUnitCircle;
+            var spawnPos = new Vector3(pos.x * Random.Range(0f, 5f), 0.5f, pos.y * Random.Range(0f, 5f));
 
-            var spawnedBoid = _boidSpawner.SpawnBoid(pos);
+            var spawnedBoid = _boidSpawner.SpawnBoid(spawnPos);
             spawnedBoid.Initialize(this);
             AddBoid(spawnedBoid);
         }
@@ -42,10 +43,5 @@ public class BoidManager : MonoBehaviour
     public void RemoveBoid(Boid boid)
     {
         _boids.Remove(boid);
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawWireCube(transform.position, new Vector3(40, 40, 40));
     }
 }

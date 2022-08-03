@@ -18,19 +18,22 @@ public class BoidSeperation : MonoBehaviour
         for (int i = 0; i < boids.Count; i++)
         {
             var dist = (transform.position - boids[i].Position).magnitude;
-            if (boids[i] != _boid && dist < _boid.Data.perceptionRadius)
+            if (boids[i] != _boid && dist < _boid.Data.avoidanceRadius)
             {
-                var diff = transform.position - boids[i].Position;
+                var thisPos = new Vector3(transform.position.x, 0f, transform.position.z);
+                var otherPos = new Vector3(boids[i].Position.x, 0f, boids[i].Position.z);
+
+                var diff = thisPos - otherPos;
                 diff /= diff.magnitude * diff.magnitude;
                 average += diff;
                 count++;
             }
         }
 
-        if (count > 0)
-        {
-            average /= count;
-        }
+        //if (count > 0)
+        //{
+        //    average /= count;
+        //}
 
         _boid.Steer(average, _boid.Data.seperationWeight);
     }
