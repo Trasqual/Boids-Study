@@ -13,8 +13,9 @@ public class BoidMovement : MonoBehaviour
 
     private void Move()
     {
-        var movementVector = new Vector3(_direction.x * _boid.Data.horizontalMovementSpeed, 0f, _boid.Data.forwardMovementSpeed);
+        var movementVector = new Vector3(0f, 0f, _boid.Data.forwardMovementSpeed);
         _boid.Steer(movementVector, _boid.Data.inputWeight);
+        _boid.SetInputVelocity(new Vector3(_direction.x * _boid.Data.horizontalMovementSpeed, 0f, 0f));
     }
 
     private void Update()

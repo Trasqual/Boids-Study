@@ -8,6 +8,7 @@ public class Boid : MonoBehaviour
 
     private Vector3 _velocity;
     private Vector3 _acceleration;
+    private Vector3 _inputVelocity;
 
     private Vector3 _previousLookDir;
     private Vector3 _lookDirRef;
@@ -34,6 +35,11 @@ public class Boid : MonoBehaviour
         _velocity = velocity;
     }
 
+    public void SetInputVelocity(Vector3 velocity)
+    {
+        _inputVelocity = velocity;
+    }
+
     private void Update()
     {
         _velocity += _acceleration * Time.deltaTime;
@@ -41,8 +47,8 @@ public class Boid : MonoBehaviour
         var speed = _velocity.magnitude;
         speed = Mathf.Clamp(speed, _data.minSpeed, _data.maxSpeed);
         _velocity = dir * speed;
-
-        transform.position += _velocity * Time.deltaTime;
+        var total = _velocity + _inputVelocity;
+        transform.position += total * Time.deltaTime;
 
         var lookDir = Vector3.zero;
         if (Mathf.Abs(transform.position.x) <= _data.limitX + 1f && Mathf.Abs(transform.position.x) >= _data.limitX - 0.1f)
@@ -51,7 +57,7 @@ public class Boid : MonoBehaviour
         }
         else
         {
-            lookDir = Vector3.SmoothDamp(_previousLookDir, dir, ref _lookDirRef, 0.2f);
+            lookDir = Vector3.SmoothDamp(_previousLookDir, total, ref _lookDirRef, 0.2f);
         }
         transform.LookAt(transform.position + lookDir);
         _previousLookDir = lookDir;
@@ -66,7 +72,7 @@ public class Boid : MonoBehaviour
     private void LimitPosition()
     {
         var pos = transform.position;
-        pos.x = Mathf.Clamp(pos.x, -_data.limitX, _data.limitX);
+        pos.x = Mathf.Clamp(pos.x, Random.Range(-_data.limitX + 0.2f, -_data.limitX - 0.2f), Random.Range(_data.limitX - 0.2f, _data.limitX + 0.2f));
         transform.position = pos;
     }
 }

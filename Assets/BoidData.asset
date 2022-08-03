@@ -12,16 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60139834e966c1847be0baabb367f95d, type: 3}
   m_Name: BoidData
   m_EditorClassIdentifier: 
-  horizontalMovementSpeed: 1
+  horizontalMovementSpeed: 10
   forwardMovementSpeed: 7
   minSpeed: 5
   maxSpeed: 8
   perceptionRadius: 10
   seperationRadius: 1.5
   maxSteerForce: 8
-  alignmentWeight: 2
-  cohesionWeight: 1
-  seperationWeight: 4
-  inputWeight: 10
+  alignmentWeight: 1.9
+  cohesionWeight: 2.9
+  seperationWeight: 9.4
+  inputWeight: 17.52
   avoidanceWeight: 1000000
   limitX: 5
