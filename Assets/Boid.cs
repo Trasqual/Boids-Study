@@ -44,7 +44,15 @@ public class Boid : MonoBehaviour
 
         transform.position += _velocity * Time.deltaTime;
 
-        var lookDir = Vector3.SmoothDamp(_previousLookDir, dir, ref _lookDirRef, 0.2f);
+        var lookDir = Vector3.zero;
+        if (Mathf.Abs(transform.position.x) <= _data.limitX + 1f && Mathf.Abs(transform.position.x) >= _data.limitX - 0.1f)
+        {
+            lookDir = Vector3.SmoothDamp(_previousLookDir, Vector3.forward, ref _lookDirRef, 0.2f);
+        }
+        else
+        {
+            lookDir = Vector3.SmoothDamp(_previousLookDir, dir, ref _lookDirRef, 0.2f);
+        }
         transform.LookAt(transform.position + lookDir);
         _previousLookDir = lookDir;
 
