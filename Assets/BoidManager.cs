@@ -21,6 +21,24 @@ public class BoidManager : MonoBehaviour
         SetupBoids();
     }
 
+    private void Update()
+    {
+        MoveWithGroup();
+    }
+
+    private void MoveWithGroup()
+    {
+        if (_boids.Count <= 0) return;
+
+        var center = Vector3.zero;
+        for (int i = 0; i < _boids.Count; i++)
+        {
+            center += _boids[i].Position;
+        }
+        center /= _boids.Count;
+        transform.position = Vector3.Lerp(transform.position, center + transform.up * 3f, Time.deltaTime * 10f);
+    }
+
     private void SetupBoids()
     {
         for (int i = 0; i < boidAmount; i++)
