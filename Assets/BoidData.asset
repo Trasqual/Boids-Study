@@ -20,6 +20,6 @@ MonoBehaviour:
   avoidanceRadius: 2
   maxSteerForce: 8
   alignmentWeight: 2
-  cohesionWeight: 0.1
+  cohesionWeight: 1
   seperationWeight: 2.5
-  inputWeight: 2
+  inputWeight: 10

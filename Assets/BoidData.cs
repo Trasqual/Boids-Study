@@ -5,11 +5,11 @@ public class BoidData : ScriptableObject
 {
     public float horizontalMovementSpeed = 10f;
     public float forwardMovementSpeed = 7f;
-    public float minSpeed = 3f;
+    public float minSpeed = 5f;
     public float maxSpeed = 8f;
-    public float perceptionRadius = 2.5f;
-    public float avoidanceRadius = 1f;
-    public float maxSteerForce = 3f;
+    public float perceptionRadius = 10f;
+    public float avoidanceRadius = 2f;
+    public float maxSteerForce = 8f;
 
     public float alignmentWeight = 2f;
     public float cohesionWeight = 1f;
