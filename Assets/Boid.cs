@@ -3,6 +3,7 @@ using UnityEngine;
 public class Boid : MonoBehaviour
 {
     [SerializeField] BoidData _data;
+    [SerializeField] BoidMovement _boidMovement;
 
     private BoidManager _boidManager;
 
@@ -14,6 +15,7 @@ public class Boid : MonoBehaviour
 
     public BoidData Data => _data;
     public BoidManager Manager => _boidManager;
+    public BoidMovement Movement => _boidMovement;
     public Vector3 Position { get; private set; }
 
     public Vector3 GetVelocity() => _velocity;

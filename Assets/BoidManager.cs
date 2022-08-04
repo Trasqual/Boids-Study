@@ -9,16 +9,10 @@ public class BoidManager : MonoBehaviour
     BoidSpawner _boidSpawner;
 
     List<Boid> _boids = new List<Boid>();
-    List<BoidMovement> _boidMovements = new List<BoidMovement>();
 
     public List<Boid> GetBoids()
     {
         return _boids;
-    }
-
-    public List<BoidMovement> GetBoidMovements()
-    {
-        return _boidMovements;
     }
 
     private void Awake()
@@ -50,7 +44,7 @@ public class BoidManager : MonoBehaviour
         for (int i = 0; i < boidAmount; i++)
         {
             var pos = Random.insideUnitCircle;
-            var spawnPos = new Vector3(pos.x * Random.Range(0f, 5f), 0.5f, pos.y * Random.Range(0f, 5f));
+            var spawnPos = new Vector3(pos.x * Random.Range(0f, 5f), 3f, pos.y * Random.Range(0f, 5f));
 
             var spawnedBoid = _boidSpawner.SpawnBoid(spawnPos);
             spawnedBoid.Initialize(this);
@@ -62,26 +56,11 @@ public class BoidManager : MonoBehaviour
     {
         if (!_boids.Contains(boid))
             _boids.Add(boid);
-
-        if (boid.TryGetComponent(out BoidMovement boidMovement))
-        {
-            if (!_boidMovements.Contains(boidMovement))
-            {
-                _boidMovements.Add(boidMovement);
-            }
-        }
     }
 
     public void RemoveBoid(Boid boid)
     {
         if (_boids.Contains(boid))
             _boids.Remove(boid);
-        if (boid.TryGetComponent(out BoidMovement boidMovement))
-        {
-            if (_boidMovements.Contains(boidMovement))
-            {
-                _boidMovements.Remove(boidMovement);
-            }
-        }
     }
 }

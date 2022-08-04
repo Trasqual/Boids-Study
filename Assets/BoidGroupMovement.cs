@@ -21,10 +21,10 @@ public class BoidGroupMovement : MonoBehaviour
     {
         if (!_canMove) return;
         var movementVector = new Vector3(_direction.x * _data.horizontalMovementSpeed, 0f, _data.forwardMovementSpeed);
-        var boids = _boidManager.GetBoidMovements();
+        var boids = _boidManager.GetBoids();
         for (int i = 0; i < boids.Count; i++)
         {
-            boids[i].Move(movementVector);
+            boids[i].Movement.Move(movementVector);
         }
     }
 
@@ -32,13 +32,13 @@ public class BoidGroupMovement : MonoBehaviour
     {
         if (_canMove)
         {
-            var boids = _boidManager.GetBoidMovements();
+            var boids = _boidManager.GetBoids();
 
             var organizedBoids = boids.OrderBy(x => -transform.InverseTransformPoint(x.transform.position).z).ToList();
             var groupSize = Mathf.FloorToInt(Mathf.Lerp(1, 5, boids.Count / 20));
             for (int i = 0; i < organizedBoids.Count; i++)
             {
-                organizedBoids[i].OnJump();
+                organizedBoids[i].Movement.OnJump();
                 if (i % groupSize == 0)
                     yield return new WaitForSeconds(0.05f);
             }
