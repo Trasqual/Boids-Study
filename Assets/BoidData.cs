@@ -22,4 +22,6 @@ public class BoidData : ScriptableObject
     public float grouperWeight = 0.05f;
 
     public float limitX = 5f;
+
+    public float deathAfterDropTime = 1.5f;
 }

@@ -1,90 +1,96 @@
+using DG.Tweening;
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Boid))]
 public class BoidMovement : MonoBehaviour
 {
+    public Action OnFellToDeath;
     private Vector3 _jumpVelocity = Vector3.zero;
     private Vector3 _jumpRefVel = Vector3.zero;
+    private Vector3 _gravity;
 
     private Boid _boid;
-    private Vector2 _direction;
+    private GroundChecker _groundChecker;
+    private BoidCohesion _boidCohesion;
 
-    private bool _canJump;
+    private float _dropTimer;
+    private bool _jumped;
 
     private void Awake()
     {
         _boid = GetComponent<Boid>();
+        _groundChecker = GetComponentInChildren<GroundChecker>();
+        _boidCohesion = GetComponent<BoidCohesion>();
     }
 
-    private void Move()
+    public void Move(Vector3 movementVector)
     {
-        //if (!_canMove) return;
-        var movementVector = new Vector3(_direction.x * _boid.Data.horizontalMovementSpeed, 0f, _boid.Data.forwardMovementSpeed);
-        Debug.Log(movementVector);
-        _boid.Steer(movementVector * _boid.Data.inputWeight);
-    }
+        _boid.Steer(new Vector3(_groundChecker.IsGrounded() ? movementVector.x : 0f, movementVector.y, movementVector.z) * _boid.Data.inputWeight);
+        _jumpVelocity = Vector3.SmoothDamp(_jumpVelocity, Vector3.zero, ref _jumpRefVel, 0.75f);
+        _boid.Steer(_jumpVelocity);
 
-    private void Update()
-    {
-        Move();
-        Jump();
         ApplyGravity();
     }
 
     private void Jump()
     {
-        if (_canJump)
+        if (_groundChecker.IsGrounded())
         {
             _jumpVelocity = _boid.Data.jumpVelocity;
-            _canJump = false;
         }
-        else
-        {
-            _jumpVelocity = Vector3.SmoothDamp(_jumpVelocity, Vector3.zero, ref _jumpRefVel, 0.75f);
-        }
-        _boid.Steer(_jumpVelocity);
     }
 
     private void ApplyGravity()
     {
-        if (transform.position.y > 0.1f && !_canJump)
-            _boid.Steer(Physics.gravity);
+        if (_groundChecker.hit.transform != null && !_jumped)
+        {
+            _dropTimer = 0f;
+
+            _gravity = Vector3.zero;
+            _boid.Steer(_gravity);
+            var pos = transform.position;
+            pos.y = _groundChecker.detectedPoint.y;
+            transform.position = pos;
+        }
         else
         {
-            //var pos = transform.position;
-            //pos.y = 0f;
-            //transform.position = pos;
+            _gravity = Physics.gravity;
+            _boid.Steer(_gravity);
+            _dropTimer += Time.deltaTime;
+            if (_dropTimer >= _boid.Data.deathAfterDropTime)
+            {
+                OnFellToDeath?.Invoke();
+            }
         }
     }
 
-    private void OnInputRecieved(Vector2 inputVector)
+    public void OnJump()
     {
-        _direction = inputVector;
+        Jump();
+        _jumped = true;
+        if (_boidCohesion != null)
+        {
+            _boidCohesion.enabled = false;
+        }
+        DOVirtual.DelayedCall(0.1f, () => _jumped = false);
     }
 
-    private void OnInputRelease()
+    private void ReEnableCohAfterJump()
     {
-        _direction = Vector2.zero;
-
-        _canJump = true;
-    }
-
-    private void OnInputPress()
-    {
-
+        if (_boidCohesion != null)
+        {
+            _boidCohesion.enabled = true;
+        }
     }
 
     private void OnEnable()
     {
-        InputBase.OnInputPressed += OnInputPress;
-        InputBase.OnInputDrag += OnInputRecieved;
-        InputBase.OnInputReleased += OnInputRelease;
+        _groundChecker.OnLanded += ReEnableCohAfterJump;
     }
 
     private void OnDisable()
     {
-        InputBase.OnInputPressed -= OnInputPress;
-        InputBase.OnInputDrag -= OnInputRecieved;
-        InputBase.OnInputReleased -= OnInputRelease;
+        _groundChecker.OnLanded -= ReEnableCohAfterJump;
     }
 }

@@ -9,10 +9,16 @@ public class BoidManager : MonoBehaviour
     BoidSpawner _boidSpawner;
 
     List<Boid> _boids = new List<Boid>();
+    List<BoidMovement> _boidMovements = new List<BoidMovement>();
 
     public List<Boid> GetBoids()
     {
         return _boids;
+    }
+
+    public List<BoidMovement> GetBoidMovements()
+    {
+        return _boidMovements;
     }
 
     private void Awake()
@@ -56,10 +62,26 @@ public class BoidManager : MonoBehaviour
     {
         if (!_boids.Contains(boid))
             _boids.Add(boid);
+
+        if (boid.TryGetComponent(out BoidMovement boidMovement))
+        {
+            if (!_boidMovements.Contains(boidMovement))
+            {
+                _boidMovements.Add(boidMovement);
+            }
+        }
     }
 
     public void RemoveBoid(Boid boid)
     {
-        _boids.Remove(boid);
+        if (_boids.Contains(boid))
+            _boids.Remove(boid);
+        if (boid.TryGetComponent(out BoidMovement boidMovement))
+        {
+            if (_boidMovements.Contains(boidMovement))
+            {
+                _boidMovements.Remove(boidMovement);
+            }
+        }
     }
 }
