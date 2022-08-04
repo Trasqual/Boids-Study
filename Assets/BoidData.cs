@@ -11,6 +11,7 @@ public class BoidData : ScriptableObject
     public float perceptionRadius = 10f;
     public float seperationRadius = 2f;
     public float maxSteerForce = 8f;
+    public Vector3 jumpVelocity = new Vector3(0f, 15f, 0f);
 
     public float alignmentWeight = 2f;
     public float cohesionWeight = 1f;

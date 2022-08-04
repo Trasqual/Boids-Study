@@ -21,8 +21,8 @@ public class BoidSeperation : MonoBehaviour
             var dist = (transform.position - boids[i].Position).magnitude;
             if (boids[i] != _boid && dist < _boid.Data.seperationRadius)
             {
-                var thisPos = new Vector3(transform.position.x, 0f, transform.position.z);
-                var otherPos = new Vector3(boids[i].Position.x, 0f, boids[i].Position.z);
+                var thisPos = transform.position;
+                var otherPos = new Vector3(boids[i].Position.x, transform.position.y, boids[i].Position.z);
 
                 var diff = thisPos - otherPos;
                 diff /= diff.magnitude * diff.magnitude;

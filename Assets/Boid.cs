@@ -40,7 +40,7 @@ public class Boid : MonoBehaviour
         _velocity = velocity;
     }
 
-    public void SetInputVelocity(Vector3 velocity)
+    public void Steer(Vector3 velocity)
     {
         _acceleration += velocity;
     }
@@ -61,7 +61,7 @@ public class Boid : MonoBehaviour
         }
         else
         {
-            lookDir = Vector3.SmoothDamp(_previousLookDir, _velocity, ref _lookDirRef, 0.2f);
+            lookDir = Vector3.SmoothDamp(_previousLookDir, new Vector3(_velocity.x, 0f, _velocity.z), ref _lookDirRef, 0.2f);
         }
         transform.LookAt(transform.position + lookDir);
         _previousLookDir = lookDir;

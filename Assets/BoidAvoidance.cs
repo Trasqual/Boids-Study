@@ -19,8 +19,8 @@ public class BoidAvoidance : MonoBehaviour
     {
         if (Physics.SphereCast(transform.position - transform.forward * 2f, _avoidanceRadius, transform.forward, out RaycastHit hit, _avoidanceRange, _mask))
         {
-            var hitPos = new Vector3(hit.transform.position.x, 0f, hit.transform.position.z);
-            var thisPos = new Vector3(transform.position.x, 0f, transform.position.z);
+            var hitPos = new Vector3(hit.transform.position.x, transform.position.y, hit.transform.position.z);
+            var thisPos = transform.position;
             var vec = Vector3.zero;
             if (hit.transform.InverseTransformPoint(thisPos).x > 0)
             {
