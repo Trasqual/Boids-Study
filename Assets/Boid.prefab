@@ -106,8 +106,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   _avoidanceRadius: 1
-  _avoidanceRange: 1
-  _avoidancePower: 1
+  _avoidanceRange: 3
+  _avoidancePower: 3
 --- !u!114 &-1791148308681400940
 MonoBehaviour:
   m_ObjectHideFlags: 0

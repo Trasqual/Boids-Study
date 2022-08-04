@@ -29,6 +29,12 @@ public class Boid : MonoBehaviour
         _acceleration += Vector3.ClampMagnitude(steer, _data.maxSteerForce) * weight;
     }
 
+    public void Steer(Vector3 direction, float weight, float speed)
+    {
+        var steer = direction.normalized * speed - _velocity;
+        _acceleration += Vector3.ClampMagnitude(steer, _data.maxSteerForce) * weight;
+    }
+
     public void SetVelocity(Vector3 velocity)
     {
         _velocity = velocity;
