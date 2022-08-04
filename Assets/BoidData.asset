@@ -19,7 +19,7 @@ MonoBehaviour:
   perceptionRadius: 1.5
   seperationRadius: 1.5
   maxSteerForce: 8
-  jumpVelocity: {x: 0, y: 15, z: 0}
+  jumpVelocity: {x: 0, y: 30, z: 0}
   alignmentWeight: 2
   cohesionWeight: 0.5
   seperationWeight: 1
