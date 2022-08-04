@@ -1,19 +1,19 @@
-using DG.Tweening;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
 
 public class BoidGroupMovement : MonoBehaviour
 {
-    [SerializeField] protected InputBase _input;
     [SerializeField] protected BoidData _data;
 
+    protected InputBase _input;
     protected BoidManager _boidManager;
     protected Vector3 _direction;
     protected bool _canMove = true;
 
     private void Awake()
     {
+        _input = GetComponent<InputBase>();
         _boidManager = GetComponent<BoidManager>();
     }
 
