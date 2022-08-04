@@ -17,6 +17,8 @@ public class BoidData : ScriptableObject
     public float seperationWeight = 2.5f;
     public float inputWeight = 5f;
     public float avoidanceWeight = 20f;
+    public float noiseWeight = 0.05f;
+    public float grouperWeight = 0.05f;
 
     public float limitX = 5f;
 }

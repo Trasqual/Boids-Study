@@ -3,7 +3,10 @@ using UnityEngine;
 [RequireComponent(typeof(Boid))]
 public class BoidAvoidance : MonoBehaviour
 {
-    [SerializeField] LayerMask mask;
+    [SerializeField] LayerMask _mask;
+    [SerializeField] float _avoidanceRadius = 1f;
+    [SerializeField] float _avoidanceRange = 2f;
+    [SerializeField] float _avoidancePower = 0.5f;
 
     Boid _boid;
 
@@ -14,19 +17,20 @@ public class BoidAvoidance : MonoBehaviour
 
     private void Avoid()
     {
-        if (Physics.SphereCast(transform.position, 1f, transform.forward, out RaycastHit hit, 2f, mask))
+        if (Physics.SphereCast(transform.position + transform.forward, _avoidanceRadius, transform.forward, out RaycastHit hit, _avoidanceRange, _mask))
         {
+            var hitPos = new Vector3(hit.transform.position.x, 0f, hit.transform.position.z);
             var thisPos = new Vector3(transform.position.x, 0f, transform.position.z);
-            var diff = Vector3.zero;
+            var vec = Vector3.zero;
             if (hit.transform.InverseTransformPoint(thisPos).x > 0)
             {
-                diff = new Vector3(1f, 0f, 0f);
+                vec = new Vector3(_avoidancePower, 0f, 0f);
             }
             else
             {
-                diff = new Vector3(-1f, 0f, 0f);
+                vec = new Vector3(-_avoidancePower, 0f, 0f);
             }
-            _boid.Steer(diff, _boid.Data.avoidanceWeight);
+            _boid.Steer(vec, _boid.Data.avoidanceWeight);
         }
 
     }
