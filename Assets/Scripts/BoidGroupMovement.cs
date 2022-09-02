@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class BoidGroupMovement : MonoBehaviour
@@ -10,6 +11,8 @@ public class BoidGroupMovement : MonoBehaviour
     private bool _canMove = true;
 
     private Camera _cam;
+
+    IEnumerator curMovement;
 
     private void Awake()
     {
@@ -27,17 +30,56 @@ public class BoidGroupMovement : MonoBehaviour
             if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, _mask))
             {
                 _position = hit.point;
-                var randXZ = Random.insideUnitCircle * 10f;
+                var randXZ = Random.insideUnitCircle * 20f;
                 _position = new Vector3(_position.x + randXZ.x, _position.y, _position.z + randXZ.y);
+                CancelCurrentMovement();
+                curMovement = StartMovement();
+                StartCoroutine(curMovement);
+            }
+        }
+    }
+
+    private void CancelCurrentMovement()
+    {
+        if (curMovement != null)
+        {
+            StopCoroutine(curMovement);
+        }
+    }
+
+    private IEnumerator StartMovement()
+    {
+        var boids = _boidManager.GetBoids();
+
+        foreach (var boid in boids)
+        {
+            boid.PrepareForMovement();
+        }
+
+        while (!AllBoidsStopped())
+        {
+            for (int i = 0; i < boids.Count; i++)
+            {
+                if (Vector3.Distance(boids[i].Position, _position) > 2f)
+                    boids[i].Movement.Move(_position - boids[i].Position);
+                else
+                    boids[i].Stop();
+            }
+            yield return null;
+        }
+    }
+
+    private bool AllBoidsStopped()
+    {
+        foreach (var boid in _boidManager.GetBoids())
+        {
+            if (!boid.Movement.IsStopped)
+            {
+                return false;
             }
         }
 
-        var boids = _boidManager.GetBoids();
-        for (int i = 0; i < boids.Count; i++)
-        {
-            if (Vector3.Distance(boids[i].Position, _position) > 1f)
-                boids[i].Movement.Move(_position - boids[i].Position);
-        }
+        return true;
     }
 
     private void EnableMovement()

@@ -1,22 +1,20 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Boid))]
-public class BoidNoise : MonoBehaviour
+public class BoidNoise : BoidHelper
 {
     [SerializeField] float _noisePower = 0.01f;
     [SerializeField] float _noiseTimer = 3f;
     float _noiseCounter = 0f;
     Vector3 _noiseVector;
 
-    Boid _boid;
-
-    private void Awake()
+    protected override void Awake()
     {
-        _boid = GetComponent<Boid>();
+        base.Awake();
         _noiseTimer = Random.Range(_noiseTimer * 0.5f, _noiseTimer * 1.5f);
     }
 
-    private void Noise()
+    protected override void Perform()
     {
         _noiseCounter += Time.deltaTime;
         if (_noiseCounter >= _noiseTimer)
@@ -26,10 +24,5 @@ public class BoidNoise : MonoBehaviour
         }
         _noiseVector = Vector3.Lerp(_noiseVector, Vector3.zero, Time.deltaTime * 30f);
         _boid.Steer(_noiseVector, _boid.Data.noiseWeight);
-    }
-
-    private void Update()
-    {
-        Noise();
     }
 }

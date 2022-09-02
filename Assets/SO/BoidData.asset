@@ -22,8 +22,8 @@ MonoBehaviour:
   jumpVelocity: {x: 0, y: 15, z: 5}
   alignmentWeight: 2
   cohesionWeight: 0.5
-  seperationWeight: 1
-  inputWeight: 2
+  seperationWeight: 3
+  inputWeight: 5
   avoidanceWeight: 10
   noiseWeight: 0.1
   grouperWeight: 0.3

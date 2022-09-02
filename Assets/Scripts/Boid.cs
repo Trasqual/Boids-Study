@@ -17,9 +17,12 @@ public class Boid : MonoBehaviour
 
     public Vector3 GetVelocity() => _velocity;
 
+    private BoidHelper[] helpers;
+
     public void Initialize(BoidManager boidManager)
     {
         _boidManager = boidManager;
+        helpers = GetComponents<BoidHelper>();
     }
 
     public void Steer(Vector3 direction, float weight)
@@ -31,6 +34,23 @@ public class Boid : MonoBehaviour
     public void Steer(Vector3 velocity)
     {
         _acceleration += velocity;
+    }
+
+    public void PrepareForMovement()
+    {
+        foreach (var helper in helpers)
+        {
+            helper.enabled = true;
+        }
+    }
+
+    public void Stop()
+    {
+        foreach (var helper in helpers)
+        {
+            helper.enabled = false;
+        }
+        _velocity = Vector3.zero;
     }
 
     private void Update()

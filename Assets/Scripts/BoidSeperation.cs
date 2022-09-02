@@ -1,16 +1,9 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Boid))]
-public class BoidSeperation : MonoBehaviour
+public class BoidSeperation : BoidHelper
 {
-    Boid _boid;
-
-    private void Awake()
-    {
-        _boid = GetComponent<Boid>();
-    }
-
-    private void Seperate()
+    protected override void Perform()
     {
         var boids = _boid.Manager.GetBoids();
 
@@ -37,10 +30,5 @@ public class BoidSeperation : MonoBehaviour
         }
 
         _boid.Steer(average, _boid.Data.seperationWeight);
-    }
-
-    private void Update()
-    {
-        Seperate();
     }
 }

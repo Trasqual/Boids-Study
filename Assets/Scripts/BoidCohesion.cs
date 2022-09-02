@@ -1,16 +1,9 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Boid))]
-public class BoidCohesion : MonoBehaviour
+public class BoidCohesion : BoidHelper
 {
-    Boid _boid;
-
-    private void Awake()
-    {
-        _boid = GetComponent<Boid>();
-    }
-
-    private void Cohesion()
+    protected override void Perform()
     {
         var boids = _boid.Manager.GetBoids();
 
@@ -33,10 +26,5 @@ public class BoidCohesion : MonoBehaviour
         }
 
         _boid.Steer(average, _boid.Data.cohesionWeight);
-    }
-
-    private void Update()
-    {
-        Cohesion();
     }
 }

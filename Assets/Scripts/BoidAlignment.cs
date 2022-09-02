@@ -1,16 +1,9 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Boid))]
-public class BoidAlignment : MonoBehaviour
+public class BoidAlignment : BoidHelper
 {
-    Boid _boid;
-
-    private void Awake()
-    {
-        _boid = GetComponent<Boid>();
-    }
-
-    private void Align()
+    protected override void Perform()
     {
         var boids = _boid.Manager.GetBoids();
 
@@ -32,10 +25,5 @@ public class BoidAlignment : MonoBehaviour
         }
 
         _boid.Steer(average, _boid.Data.alignmentWeight);
-    }
-
-    private void Update()
-    {
-        Align();
     }
 }

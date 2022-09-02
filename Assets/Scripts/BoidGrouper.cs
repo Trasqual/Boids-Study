@@ -1,17 +1,11 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Boid))]
-public class BoidGrouper : MonoBehaviour
+public class BoidGrouper : BoidHelper
 {
     [SerializeField] float _groupingDistance = 8f;
-    Boid _boid;
 
-    private void Awake()
-    {
-        _boid = GetComponent<Boid>();
-    }
-
-    private void GroupUp()
+    protected override void Perform()
     {
         var boids = _boid.Manager.GetBoids();
 
@@ -34,10 +28,5 @@ public class BoidGrouper : MonoBehaviour
         average -= new Vector3(transform.position.x, 0f, transform.position.z);
         if (dist > _groupingDistance)
             _boid.Steer(average, _boid.Data.grouperWeight);
-    }
-
-    private void Update()
-    {
-        GroupUp();
     }
 }

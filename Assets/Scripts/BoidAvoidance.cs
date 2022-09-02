@@ -1,20 +1,13 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Boid))]
-public class BoidAvoidance : MonoBehaviour
+public class BoidAvoidance : BoidHelper
 {
     [SerializeField] LayerMask _mask;
     [SerializeField] float _avoidanceRadius = 1f;
     [SerializeField] float _avoidanceRange = 2f;
 
-    Boid _boid;
-
-    private void Awake()
-    {
-        _boid = GetComponent<Boid>();
-    }
-
-    private void Avoid()
+    protected override void Perform()
     {
         if (Physics.SphereCast(transform.position - transform.forward * 2f, _avoidanceRadius, transform.forward, out RaycastHit hit, _avoidanceRange, _mask))
         {
@@ -31,10 +24,5 @@ public class BoidAvoidance : MonoBehaviour
             }
             _boid.Steer(vec, _boid.Data.avoidanceWeight);
         }
-    }
-
-    private void Update()
-    {
-        Avoid();
     }
 }
