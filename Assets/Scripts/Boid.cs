@@ -23,6 +23,7 @@ public class Boid : MonoBehaviour
     {
         _boidManager = boidManager;
         helpers = GetComponents<BoidHelper>();
+        Stop();
     }
 
     public void Steer(Vector3 direction, float weight)
@@ -34,6 +35,11 @@ public class Boid : MonoBehaviour
     public void Steer(Vector3 velocity)
     {
         _acceleration += velocity;
+    }
+
+    public void SetVelocity(Vector3 velocity)
+    {
+        _velocity = velocity;
     }
 
     public void PrepareForMovement()

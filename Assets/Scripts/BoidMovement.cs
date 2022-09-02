@@ -25,7 +25,7 @@ public class BoidMovement : MonoBehaviour
     {
         IsStopped = false;
         _boid.Steer(movementVector, _boid.Data.inputWeight);
-        //ApplyGravity();
+        ApplyGravity();
     }
 
     public void Stop()
@@ -41,7 +41,7 @@ public class BoidMovement : MonoBehaviour
             _dropTimer = 0f;
 
             _gravity = Vector3.zero;
-            _boid.Steer(_gravity);
+            _boid.transform.position += _gravity * Time.deltaTime;
             var pos = transform.position;
             pos.y = _groundChecker.detectedPoint.y;
             transform.position = pos;
@@ -49,7 +49,7 @@ public class BoidMovement : MonoBehaviour
         else
         {
             _gravity = Physics.gravity;
-            _boid.Steer(_gravity);
+            _boid.transform.position += _gravity * Time.deltaTime;
             _dropTimer += Time.deltaTime;
             if (_dropTimer >= _boid.Data.deathAfterDropTime)
             {

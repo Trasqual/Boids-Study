@@ -15,7 +15,7 @@ public class BoidSeperation : BoidHelper
             if (boids[i] != _boid && dist < _boid.Data.seperationRadius)
             {
                 var thisPos = transform.position;
-                var otherPos = boids[i].Position;
+                var otherPos = new Vector3(boids[i].Position.x, transform.position.y, boids[i].Position.z);
 
                 var diff = thisPos - otherPos;
                 diff /= diff.magnitude * diff.magnitude;

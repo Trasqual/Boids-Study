@@ -50,10 +50,10 @@ public class BoidGroupMovement : MonoBehaviour
     private IEnumerator StartMovement()
     {
         var boids = _boidManager.GetBoids();
-
-        foreach (var boid in boids)
+        for (int i = 0; i < boids.Count; i++)
         {
-            boid.PrepareForMovement();
+            boids[i].PrepareForMovement();
+            boids[i].SetVelocity(_position - boids[i].Position);
         }
 
         while (!AllBoidsStopped())
@@ -78,7 +78,6 @@ public class BoidGroupMovement : MonoBehaviour
                 return false;
             }
         }
-
         return true;
     }
 

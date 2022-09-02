@@ -24,7 +24,7 @@ MonoBehaviour:
   cohesionWeight: 0.5
   seperationWeight: 3
   inputWeight: 5
-  avoidanceWeight: 10
+  avoidanceWeight: 20
   noiseWeight: 0.1
   grouperWeight: 0.3
   limitX: 6
