@@ -44,7 +44,7 @@ public class BoidManager : MonoBehaviour
         for (int i = 0; i < boidAmount; i++)
         {
             var pos = Random.insideUnitCircle;
-            var spawnPos = new Vector3(pos.x * Random.Range(0f, 5f), 3f, pos.y * Random.Range(0f, 5f));
+            var spawnPos = new Vector3(pos.x * Random.Range(0f, 5f), 0f, pos.y * Random.Range(0f, 5f));
 
             var spawnedBoid = _boidSpawner.SpawnBoid(spawnPos);
             spawnedBoid.Initialize(this);

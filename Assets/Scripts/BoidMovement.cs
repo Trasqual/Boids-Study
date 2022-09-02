@@ -23,7 +23,7 @@ public class BoidMovement : MonoBehaviour
     {
         _boid.Steer(movementVector, _boid.Data.inputWeight);
 
-        ApplyGravity();
+        //ApplyGravity();
     }
 
     private void ApplyGravity()
