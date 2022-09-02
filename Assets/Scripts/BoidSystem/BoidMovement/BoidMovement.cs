@@ -13,7 +13,7 @@ public class BoidMovement : MonoBehaviour
     private float _dropTimer;
     private bool _jumped;
 
-    public bool IsStopped { get; private set; }
+    public bool IsStopped { get; set; }
 
     private void Awake()
     {
@@ -23,7 +23,6 @@ public class BoidMovement : MonoBehaviour
 
     public void Move(Vector3 movementVector)
     {
-        IsStopped = false;
         _boid.Steer(movementVector, _boid.Data.inputWeight);
         ApplyGravity();
     }

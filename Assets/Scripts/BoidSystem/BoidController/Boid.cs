@@ -56,6 +56,7 @@ public class Boid : MonoBehaviour
         {
             helper.enabled = false;
         }
+        _acceleration = Vector3.zero;
         _velocity = Vector3.zero;
     }
 
