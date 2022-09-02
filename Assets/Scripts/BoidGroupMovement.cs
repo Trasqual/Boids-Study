@@ -1,64 +1,43 @@
-using System.Collections;
-using System.Linq;
 using UnityEngine;
 
 public class BoidGroupMovement : MonoBehaviour
 {
-    [SerializeField] protected BoidData _data;
+    [SerializeField] private BoidData _data;
+    [SerializeField] private LayerMask _mask;
 
-    protected InputBase _input;
-    protected BoidManager _boidManager;
-    protected Vector3 _direction;
-    protected bool _canMove = true;
+    private BoidManager _boidManager;
+    private Vector3 _position;
+    private bool _canMove = true;
+
+    private Camera _cam;
 
     private void Awake()
     {
-        _input = GetComponent<InputBase>();
         _boidManager = GetComponent<BoidManager>();
+        _cam = Camera.main;
     }
 
     private void Update()
     {
         if (!_canMove) return;
-        var movementVector = new Vector3(_direction.x * _data.horizontalMovementSpeed, 0f, _data.forwardMovementSpeed);
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            Ray ray = _cam.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, _mask))
+            {
+                _position = hit.point;
+                var randXZ = Random.insideUnitCircle * 10f;
+                _position = new Vector3(_position.x + randXZ.x, _position.y, _position.z + randXZ.y);
+            }
+        }
+
         var boids = _boidManager.GetBoids();
         for (int i = 0; i < boids.Count; i++)
         {
-            boids[i].Movement.Move(movementVector);
+            if (Vector3.Distance(boids[i].Position, _position) > 1f)
+                boids[i].Movement.Move(_position - boids[i].Position);
         }
-    }
-
-    private IEnumerator PerformGroupJump()
-    {
-        if (_canMove)
-        {
-            var boids = _boidManager.GetBoids();
-
-            var organizedBoids = boids.OrderBy(x => -transform.InverseTransformPoint(x.transform.position).z).ToList();
-            var groupSize = Mathf.FloorToInt(Mathf.Lerp(1, 5, boids.Count / 20));
-            for (int i = 0; i < organizedBoids.Count; i++)
-            {
-                organizedBoids[i].Movement.OnJump();
-                if (i % groupSize == 0)
-                    yield return new WaitForSeconds(0.05f);
-            }
-        }
-    }
-
-    private void OnInputPress()
-    {
-
-    }
-
-    private void OnInput(Vector2 input)
-    {
-        _direction = new Vector3(input.x, 0f, input.y);
-    }
-
-    private void OnInputRelease()
-    {
-        _direction = Vector3.zero;
-        StartCoroutine(PerformGroupJump());
     }
 
     private void EnableMovement()
@@ -69,27 +48,5 @@ public class BoidGroupMovement : MonoBehaviour
     private void DisableMovement()
     {
         _canMove = false;
-    }
-
-    private void OnEnable()
-    {
-        _input.OnInputPressed += OnInputPress;
-        _input.OnInputDrag += OnInput;
-        _input.OnInputReleased += OnInputRelease;
-
-        //GameManager.OnGameStart += EnableMovement;
-        //GameManager.OnGameLose += DisableMovement;
-        //GameManager.OnGameWin += DisableMovement;
-    }
-
-    private void OnDisable()
-    {
-        _input.OnInputPressed -= OnInputPress;
-        _input.OnInputDrag -= OnInput;
-        _input.OnInputReleased -= OnInputRelease;
-
-        //GameManager.OnGameStart -= EnableMovement;
-        //GameManager.OnGameLose -= DisableMovement;
-        //GameManager.OnGameWin -= DisableMovement;
     }
 }

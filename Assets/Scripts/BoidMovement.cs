@@ -1,4 +1,3 @@
-using DG.Tweening;
 using System;
 using UnityEngine;
 
@@ -6,13 +5,10 @@ using UnityEngine;
 public class BoidMovement : MonoBehaviour
 {
     public Action OnFellToDeath;
-    private Vector3 _jumpVelocity = Vector3.zero;
-    private Vector3 _jumpRefVel = Vector3.zero;
     private Vector3 _gravity;
 
     private Boid _boid;
     private GroundChecker _groundChecker;
-    private BoidCohesion _boidCohesion;
 
     private float _dropTimer;
     private bool _jumped;
@@ -21,24 +17,13 @@ public class BoidMovement : MonoBehaviour
     {
         _boid = GetComponent<Boid>();
         _groundChecker = GetComponentInChildren<GroundChecker>();
-        _boidCohesion = GetComponent<BoidCohesion>();
     }
 
     public void Move(Vector3 movementVector)
     {
-        _boid.Steer(new Vector3(_groundChecker.IsGrounded() ? movementVector.x : 0f, movementVector.y, movementVector.z) * _boid.Data.inputWeight);
-        _jumpVelocity = Vector3.SmoothDamp(_jumpVelocity, Vector3.zero, ref _jumpRefVel, 0.75f);
-        _boid.Steer(_jumpVelocity);
+        _boid.Steer(movementVector, _boid.Data.inputWeight);
 
         ApplyGravity();
-    }
-
-    private void Jump()
-    {
-        if (_groundChecker.IsGrounded())
-        {
-            _jumpVelocity = _boid.Data.jumpVelocity;
-        }
     }
 
     private void ApplyGravity()
@@ -63,34 +48,5 @@ public class BoidMovement : MonoBehaviour
                 OnFellToDeath?.Invoke();
             }
         }
-    }
-
-    public void OnJump()
-    {
-        Jump();
-        _jumped = true;
-        if (_boidCohesion != null)
-        {
-            _boidCohesion.enabled = false;
-        }
-        DOVirtual.DelayedCall(0.1f, () => _jumped = false);
-    }
-
-    private void ReEnableCohAfterJump()
-    {
-        if (_boidCohesion != null)
-        {
-            _boidCohesion.enabled = true;
-        }
-    }
-
-    private void OnEnable()
-    {
-        _groundChecker.OnLanded += ReEnableCohAfterJump;
-    }
-
-    private void OnDisable()
-    {
-        _groundChecker.OnLanded -= ReEnableCohAfterJump;
     }
 }

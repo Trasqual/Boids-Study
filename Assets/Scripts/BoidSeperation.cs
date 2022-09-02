@@ -22,7 +22,7 @@ public class BoidSeperation : MonoBehaviour
             if (boids[i] != _boid && dist < _boid.Data.seperationRadius)
             {
                 var thisPos = transform.position;
-                var otherPos = new Vector3(boids[i].Position.x, transform.position.y, boids[i].Position.z);
+                var otherPos = boids[i].Position;
 
                 var diff = thisPos - otherPos;
                 diff /= diff.magnitude * diff.magnitude;
@@ -31,10 +31,10 @@ public class BoidSeperation : MonoBehaviour
             }
         }
 
-        //if (count > 0)
-        //{
-        //    average /= count;
-        //}
+        if (count > 0)
+        {
+            average /= count;
+        }
 
         _boid.Steer(average, _boid.Data.seperationWeight);
     }

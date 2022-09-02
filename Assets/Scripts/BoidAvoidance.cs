@@ -6,7 +6,6 @@ public class BoidAvoidance : MonoBehaviour
     [SerializeField] LayerMask _mask;
     [SerializeField] float _avoidanceRadius = 1f;
     [SerializeField] float _avoidanceRange = 2f;
-    [SerializeField] float _avoidancePower = 3f;
 
     Boid _boid;
 
@@ -30,7 +29,7 @@ public class BoidAvoidance : MonoBehaviour
             {
                 vec = new Vector3(-1, 0f, 0f);
             }
-            _boid.Steer(vec, _boid.Data.avoidanceWeight, _avoidancePower);
+            _boid.Steer(vec, _boid.Data.avoidanceWeight);
         }
     }
 
