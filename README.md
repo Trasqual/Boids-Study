@@ -36,6 +36,8 @@ Results were much better than what I expected. The boids don't have any pathfind
 
 -BoidHelper: This is the base class for general boid behaviours. (BoidBehaviour might have been a better name but.. oh well)
 
+-BoidMovement: This is the script that processes the input direction recieved from the BoidGroupMovement.
+
 -BoidCohesion: This is where a boid tries to steer towards the center of nearby boids.
 
 -BoidSeperation: This is where a boid tries to steer a certain distance away from enarby boids.
