@@ -74,17 +74,14 @@ public class BoidGroupMovement : MonoBehaviour
         {
             boids[i].PrepareForMovement();
             boids[i].SetVelocity(endPositions[i] - boids[i].Position);
-            boids[i].Movement.IsStopped = false;
+            boids[i].IsStopped = false;
         }
 
         while (!AllBoidsStopped())
         {
             for (int i = 0; i < boids.Count; i++)
             {
-                if (Vector3.Distance(boids[i].Position, endPositions[i]) > .5f)
-                    boids[i].Movement.Move((endPositions[i] - boids[i].Position).normalized);
-                else
-                    boids[i].Movement.Stop();
+                boids[i].UpdateBoid(endPositions[i]);
             }
             yield return null;
         }
@@ -102,7 +99,7 @@ public class BoidGroupMovement : MonoBehaviour
     {
         foreach (var boid in _boidManager.GetBoids())
         {
-            if (!boid.Movement.IsStopped)
+            if (!boid.IsStopped)
             {
                 return false;
             }

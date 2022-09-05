@@ -19,6 +19,8 @@ public class Boid : MonoBehaviour
 
     private BoidHelper[] helpers;
 
+    public bool IsStopped;
+
     public void Initialize(BoidManager boidManager)
     {
         _boidManager = boidManager;
@@ -60,19 +62,32 @@ public class Boid : MonoBehaviour
         _velocity = Vector3.zero;
     }
 
-    private void Update()
+    public void UpdateBoid(Vector3 endPos)
     {
-        _velocity += _acceleration * Time.deltaTime;
-        var dir = _velocity.normalized;
-        var speed = _velocity.magnitude;
-        speed = Mathf.Clamp(speed, _data.minSpeed, _data.maxSpeed);
-        _velocity = dir * speed;
+        if ((Position - endPos).magnitude > .5f)
+        {
+            foreach (var helper in helpers)
+            {
+                helper.UpdateHelper();
+            }
+            _boidMovement.Move((endPos - Position).normalized);
+            _velocity += _acceleration * Time.deltaTime;
+            var dir = _velocity.normalized;
+            var speed = _velocity.magnitude;
+            speed = Mathf.Clamp(speed, _data.minSpeed, _data.maxSpeed);
+            _velocity = dir * speed;
 
-        transform.position += _velocity * Time.deltaTime;
-        transform.forward = dir;
+            transform.position += _velocity * Time.deltaTime;
+            transform.forward = dir;
 
-        _acceleration = Vector3.zero;
+            _acceleration = Vector3.zero;
 
-        Position = transform.position;
+            Position = transform.position;
+        }
+        else
+        {
+            Stop();
+        }
     }
 }
+

@@ -9,7 +9,7 @@ public abstract class BoidHelper : MonoBehaviour
         _boid = GetComponent<Boid>();
     }
 
-    protected virtual void Update()
+    public virtual void UpdateHelper()
     {
         Perform();
     }
