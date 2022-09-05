@@ -120,7 +120,7 @@ public class BoidGroupMovement : MonoBehaviour
         _canMove = false;
     }
 
-    private class Grid
+    private struct Grid
     {
         private int _width;
         private int _height;
